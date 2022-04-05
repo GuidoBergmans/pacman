@@ -27,6 +27,7 @@ function createEnemy () {
     enemySprite.follow(mySprite)
 }
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
+    enemySprite.destroy()
     animation.runImageAnimation(
     mySprite,
     assets.animation`myAnim`,
@@ -34,6 +35,7 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSp
     false
     )
     music.siren.play()
+    pause(4000)
     game.over(false, effects.melt)
 })
 let enemySprite: Sprite = null
@@ -69,7 +71,10 @@ game.onUpdate(function () {
     info.changeScoreBy(1)
     controller.moveSprite(mySprite, 200, 200)
     scene.cameraFollowSprite(mySprite)
-    if (game.runtime() >= 1e+21) {
+    if (game.runtime() >= 30000) {
         game.over(false, effects.smiles)
     }
+})
+game.onUpdateInterval(10000, function () {
+    createEnemy()
 })
